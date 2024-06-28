@@ -1,0 +1,103 @@
+<!-- website/templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d33131;
+        margin: 20px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    form textarea, form select, form button {
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    form button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    form button:hover {
+        background-color: #0056b3;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    ul li {
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-left: 3px solid #007bff;
+        border-radius: 4px;
+        position: relative;
+    }
+    ul li .actions {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+    .error {
+        color: red;
+        font-size: 12px;
+    }
+</style>
+
+<div class="container">
+    <h1>Welcome, {{ user.username }}</h1>
+
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="/add-note">
+        <textarea name="note" placeholder="Enter your note here" required></textarea>
+        <select name="mood" required>
+            <option value="" disabled selected>Select Mood</option>
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <option value="neutral">Neutral</option>
+        </select>
+        <button type="submit">Add Note</button>
+    </form>
+
+    <ul>
+        {% for note in user.notes %}
+        <li>
+            {{ note.data }} - {{ note.mood }} ({{ note.date.strftime('%Y-%m-%d %H:%M:%S') }})
+            <div class="actions">
+                <a href="{{ url_for('views.edit_note', note_id=note.id) }}">Edit</a>
+                <form method="POST" action="{{ url_for('views.delete_note', note_id=note.id) }}" style="display:inline;">
+                    <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Delete</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+<!-- website/templates/edit_note.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Edit Note
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #d33131;
+        margin: 20px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    form textarea, form select, form button {
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    form button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    form button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="container">
+    <h1>Edit Note</h1>
+
+    <form method="POST">
+        <textarea name="note" required>{{ note.data }}</textarea>
+        <select name="mood" required>
+            <option value="" disabled>Select Mood</option>
+            <option value="happy" {% if note.mood == 'happy' %}selected{% endif %}>Happy</option>
+            <option value="sad" {% if note.mood == 'sad' %}selected{% endif %}>Sad</option>
+            <option value="neutral" {% if note.mood == 'neutral' %}selected{% endif %}>Neutral</option>
+        </select>
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
